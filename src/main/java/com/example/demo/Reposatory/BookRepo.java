@@ -1,5 +1,6 @@
 package com.example.demo.Reposatory;
 
+import com.example.demo.Base.BaseRepo;
 import com.example.demo.Entity.Book;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BookRepo extends JpaRepository<Book, Long> {
+public interface BookRepo extends BaseRepo<Book, Long> {
 //
 
 //    @EntityGraph(attributePaths = {"author"})

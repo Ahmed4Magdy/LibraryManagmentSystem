@@ -8,19 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @MappedSuperclass
-public class BaseService <T extends BaseEntity,ID extends Number> {
+public class BaseService<T extends BaseEntity<ID>, ID extends Number> {
 
     @Autowired
     private BaseRepo<T,ID> baseRepo;
 
-
-
-    public List<T> insertall(List <T> author) {
+    public List<T> insertall(List<T> author) {
         return baseRepo.saveAll(author);
 
     }
 
     public T insert(T author) {
+
         return baseRepo.save(author);
 
     }
@@ -44,13 +43,9 @@ public class BaseService <T extends BaseEntity,ID extends Number> {
     }
 
 
-    public List<T> findall(){
+    public List<T> findall() {
         return baseRepo.findAll();
     }
-
-
-
-
 
 
 }
