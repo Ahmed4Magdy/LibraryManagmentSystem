@@ -10,9 +10,9 @@ public class IpAddressImpl implements ConstraintValidator<IpAddress,String> {
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
 
-//        if (s == null || s.isEmpty()) {
-//            return false; // Null or empty strings are not valid IPs.
-//        }
+        if (s == null || s.isEmpty()) {
+            return false; // Null or empty strings are not valid IPs.
+        }
 
         Pattern pattern = Pattern.compile("^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$");
         Matcher matcher =pattern.matcher(s);
