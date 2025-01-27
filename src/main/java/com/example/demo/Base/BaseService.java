@@ -1,17 +1,19 @@
 package com.example.demo.Base;
 
 import com.example.demo.Entity.Author;
+import com.example.demo.Error.RecordNotFoundException;
 import com.example.demo.Reposatory.AuthorRepo;
 import jakarta.persistence.MappedSuperclass;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @MappedSuperclass
 public class BaseService<T extends BaseEntity<ID>, ID extends Number> {
 
     @Autowired
-    private BaseRepo<T,ID> baseRepo;
+    private BaseRepo<T, ID> baseRepo;
 
     public List<T> insertall(List<T> author) {
         return baseRepo.saveAll(author);
@@ -26,7 +28,12 @@ public class BaseService<T extends BaseEntity<ID>, ID extends Number> {
 
 
     public T findbyid(ID id) {
-        return baseRepo.findById(id).orElseThrow();
+        Optional<T> entity = baseRepo.findById(id);
+        if (entity.isPresent()) {
+            return entity.get();
+        } else {
+            throw  new RecordNotFoundException("Ths record with id:- " + id + " not found ");
+        }
     }
 
 
