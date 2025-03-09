@@ -30,6 +30,8 @@ public class AuthorController {
 
     @GetMapping("/{id}")
     public Author findbyid(@PathVariable @Min(value = 5) @Max(value = 100) Long id) {
+
+
         return authorService.findbyid(id);
     }
 
@@ -40,10 +42,10 @@ public class AuthorController {
         return authorService.update(author);
     }
 
-    @GetMapping("")
-    public List<Author> findall() {
-        return authorService.findall();
-    }
+//    @GetMapping("")
+//    public List<Author> findall() {
+//        return authorService.findall();
+//    }
 
 
     @PostMapping("/post/")
@@ -58,10 +60,26 @@ public class AuthorController {
     }
 
 
-//    @GetMapping("/{email}")
-//    public Optional<Author> findByEmail(@PathVariable String email) {
-//        return authorService.findByEmail(email);
-//    }
+    @GetMapping("/email/{email}")
+    public Optional<Author> findByEmail(@PathVariable String email) {
+        return authorService.findByEmail(email);
+    }
+
+    @GetMapping("")
+    public List<Author> findAll() {
+        return authorService.findAll();
+    }
+
+
+
+
+    @DeleteMapping("/{id}")
+    public void DeleteAuthor(@PathVariable Long id){
+        authorService.DeleteAuthor(id);
+    }
+
+
+
 
 
 }

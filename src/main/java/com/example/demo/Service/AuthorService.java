@@ -3,11 +3,12 @@ package com.example.demo.Service;
 import com.example.demo.Base.BaseService;
 import com.example.demo.Entity.Author;
 import com.example.demo.Entity.Authorsearch;
-import com.example.demo.Entity.Book;
 import com.example.demo.Error.DuplicateRecordException;
-import com.example.demo.Reposatory.AuthorRepo;
-import com.example.demo.Reposatory.AuthorSpecification;
+import com.example.demo.Repository.AuthorRepo;
+import com.example.demo.Repository.AuthorSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,12 @@ public class AuthorService extends BaseService<Author, Long> {
 
     public Author update(Author author) {
         return authorRepo.save(author);
+    }
+
+
+    @Cacheable(value = "findAllAuthor")
+    public List<Author> findAll(){
+        return authorRepo.findAll();
     }
 
 
@@ -44,6 +51,7 @@ public class AuthorService extends BaseService<Author, Long> {
 //        return authorRepo.findByEmail(email);
 //    }
 
+    @CacheEvict(value = {"findAllAuthor,findbyid"},allEntries = true )
     @Override
     public Author insert(Author author) {
 
@@ -58,4 +66,17 @@ public class AuthorService extends BaseService<Author, Long> {
 
     }
 
+
+    @Cacheable(value = "findbyid",key = "#id")
+    public Author findById(Long id){
+        return authorRepo.findById(id).get();
+    }
+
+
+    @CacheEvict(value = "{findAllAuthor,findbyid}")
+    public void DeleteAuthor(Long id){
+        authorRepo.deleteById(id);
+    }
+
 }
+
