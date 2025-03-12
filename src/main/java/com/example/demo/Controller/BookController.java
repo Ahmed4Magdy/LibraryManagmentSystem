@@ -8,6 +8,7 @@ import com.example.demo.Entity.BookDto;
 import com.example.demo.Service.AuthorService;
 import com.example.demo.Service.BookService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +20,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/book")
 @Validated
-
+@RequiredArgsConstructor
 public class BookController {
 
-    @Autowired
-    private BookService bookService;
+    private final  BookService bookService;
 
-    @Autowired
-    private AuthorService authorService;
+    private final AuthorService authorService;
 
     @PostMapping("/post")
     @Transactional
@@ -46,9 +45,10 @@ public class BookController {
         if (book.getAuthor() != null && book.getAuthor().getId() != null) {
 
 
-        book.setTitle(dto.getTitle());
-        book.setPrice(dto.getPrice());
-        book.setAuthor(dto.getAuthor());}
+            book.setTitle(dto.getTitle());
+            book.setPrice(dto.getPrice());
+            book.setAuthor(dto.getAuthor());
+        }
         return bookService.insert(book);
 
 
@@ -57,11 +57,12 @@ public class BookController {
     @GetMapping("/{id}")
     public Book findbyid(@PathVariable Long id) {
 
-        Book book = bookService.findbyid(id);
+//        Book book = bookService.findbyid(id);
+//
+////        Author author= book.getAuthor();
+//        return book;
 
-//        Author author= book.getAuthor();
-        return book;
-
+        return bookService.findbyid(id);
     }
 
 
@@ -81,6 +82,13 @@ public class BookController {
     public int deleteByAuthorById(@PathVariable Long id) {
         return bookService.deleteByAuthorById(id);
     }
+
+
+//    @GetMapping("/dto/{id}")
+//    public BookDto InsertBookDto(@PathVariable Long id) {
+//
+//        return bookService.InsertBookDto(id);
+//    }
 
 
 }

@@ -6,6 +6,7 @@ import com.example.demo.Entity.Authorsearch;
 import com.example.demo.Error.DuplicateRecordException;
 import com.example.demo.Repository.AuthorRepo;
 import com.example.demo.Repository.AuthorSpecification;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -15,10 +16,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AuthorService extends BaseService<Author, Long> {
 
-    @Autowired
-    private AuthorRepo authorRepo;
+
+    private final AuthorRepo authorRepo;
 
 
     public Author update(Author author) {
@@ -27,7 +29,7 @@ public class AuthorService extends BaseService<Author, Long> {
 
 
     @Cacheable(value = "findAllAuthor")
-    public List<Author> findAll(){
+    public List<Author> findAll() {
         return authorRepo.findAll();
     }
 
@@ -38,9 +40,9 @@ public class AuthorService extends BaseService<Author, Long> {
         return authorRepo.findAll(spec);
     }
 
-        public Optional<Author> findByEmail(String email) {
+    public Optional<Author> findByEmail(String email) {
         return authorRepo.findByEmail(email);
-        }
+    }
 
 //    public Optional<Author> findByEmail(String email){
 ////        return authorRepo.findByEmail(email);
@@ -51,14 +53,14 @@ public class AuthorService extends BaseService<Author, Long> {
 //        return authorRepo.findByEmail(email);
 //    }
 
-    @CacheEvict(value = {"findAllAuthor,findbyid"},allEntries = true )
+    @CacheEvict(value = {"findAllAuthor,findbyid"}, allEntries = true)
     @Override
     public Author insert(Author author) {
 
-        if(!author.getEmail().isEmpty() && author.getEmail()!=null){
-            Optional<Author>existauthor=findByEmail(author.getEmail());
-            if(existauthor.isPresent()){
-                throw new DuplicateRecordException("this mail  already exist" );
+        if (!author.getEmail().isEmpty() && author.getEmail() != null) {
+            Optional<Author> existauthor = findByEmail(author.getEmail());
+            if (existauthor.isPresent()) {
+                throw new DuplicateRecordException("this mail  already exist");
             }
         }
 
@@ -67,14 +69,14 @@ public class AuthorService extends BaseService<Author, Long> {
     }
 
 
-    @Cacheable(value = "findbyid",key = "#id")
-    public Author findById(Long id){
+    @Cacheable(value = "findbyid", key = "#id")
+    public Author findById(Long id) {
         return authorRepo.findById(id).get();
     }
 
 
     @CacheEvict(value = "{findAllAuthor,findbyid}")
-    public void DeleteAuthor(Long id){
+    public void DeleteAuthor(Long id) {
         authorRepo.deleteById(id);
     }
 

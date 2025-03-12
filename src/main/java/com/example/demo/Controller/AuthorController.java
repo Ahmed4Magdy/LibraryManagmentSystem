@@ -6,6 +6,7 @@ import com.example.demo.Service.AuthorService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,10 +18,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/author")
 @Validated
+@RequiredArgsConstructor
 public class AuthorController {
 
-    @Autowired
-    private AuthorService authorService;
+    private final AuthorService authorService;
 
     @PostMapping("/post")
     public List<Author> insert(@RequestBody List<Author> author) {

@@ -5,7 +5,11 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class BookDto {
 
 
@@ -19,38 +23,5 @@ public class BookDto {
     private Author author;
 
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
 
 }

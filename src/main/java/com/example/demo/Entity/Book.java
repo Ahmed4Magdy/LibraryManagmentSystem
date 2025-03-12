@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,6 +21,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+@Getter
+@Setter
 @Table(name = "book")
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -37,61 +42,13 @@ public class Book extends BaseEntity<Long> {
 
     @Formula("(select count(*) from book )")
     private long bookcount;
-    @JsonBackReference
+//    @JsonBackReference
 //    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     @NotNull
+    @JsonIgnore
     private Author author;
 
-
-    public String getTitle() {
-        return title;
-    }
-
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
-
-    public double getDiscount() {
-        return discount;
-    }
-
-
-    public long getBookcount() {
-        return bookcount;
-    }
-
-    public void setBookcount(long bookcount) {
-        this.bookcount = bookcount;
-    }
-
-
-//
-//    @PostLoad
-//    private void calcdiscount(){
-//        this.setDiscount(price*.25);
-//    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
 }

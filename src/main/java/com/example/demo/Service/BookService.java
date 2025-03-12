@@ -3,24 +3,21 @@ package com.example.demo.Service;
 import com.example.demo.Base.BaseService;
 import com.example.demo.Entity.Author;
 import com.example.demo.Entity.Book;
-import com.example.demo.BookProjection;
-import com.example.demo.Reposatory.BookRepo;
+import com.example.demo.Entity.BookDto;
+import com.example.demo.Repository.BookRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
-
+@RequiredArgsConstructor
 @Service
-public class BookService extends BaseService<Book,Long> {
+public class BookService extends BaseService<Book, Long> {
 
-    @Autowired
-    private BookRepo bookRepo;
+    private final BookRepo bookRepo;
 
-    @Autowired
-    AuthorService authorService;
+    final AuthorService authorService;
 
 
     @Transactional
@@ -47,5 +44,17 @@ public class BookService extends BaseService<Book,Long> {
     public int deleteByAuthorById(Long id) {
         return bookRepo.deleteByAuthorById(id);
     }
+
+
+//    public BookDto InsertBookDto(Long id) {
+//
+//        Book Bookexist = bookRepo.findById(id).get();
+//        return new BookDto(Bookexist.getId(), Bookexist.getTitle(), Bookexist.getPrice(), Bookexist.getAuthor());
+//    }
+
+
 }
+
+
+
 
