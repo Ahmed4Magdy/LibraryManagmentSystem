@@ -1,6 +1,7 @@
-package com.example.demo.Entity;
+package com.example.demo.Dto;
 
-import jakarta.persistence.*;
+import com.example.demo.Base.BaseEntity;
+import com.example.demo.Entity.Author;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -10,8 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BookDto {
-
+public class BookDto extends BaseEntity<Long> {
 
     private Long id;
     @NotBlank(message = "should be enter book name")

@@ -1,5 +1,6 @@
 package com.example.demo.Controller;
 
+import com.example.demo.Dto.AuthorDto;
 import com.example.demo.Entity.Author;
 import com.example.demo.Entity.Authorsearch;
 import com.example.demo.Service.AuthorService;
@@ -30,28 +31,79 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
-    public Author findbyid(@PathVariable @Min(value = 5) @Max(value = 100) Long id) {
+    public ResponseEntity<?> findbyid(@PathVariable @Min(value = 5) @Max(value = 100) Long id) {
 
 
-        return authorService.findbyid(id);
+        Author author = authorService.findbyid(id);
+        AuthorDto dto = new AuthorDto();
+        dto.setId(author.getId());
+        dto.setName(author.getName());
+        dto.setEmail(author.getEmail());
+        return ResponseEntity.ok(dto);
     }
 
     @PutMapping("/put")
-    public Author update(@RequestBody Author author) {
-        Author authors = findbyid(author.getId());
-        author.setName(author.getName());
-        return authorService.update(author);
+    public ResponseEntity<?> update(@RequestBody AuthorDto dto) {
+
+
+//        Author existauthor =authorService.findById(dto.getId());
+//
+//        Author author = new Author();
+//        author.setName(dto.getName());
+//        author.setEmail(dto.getEmail());
+//        Author updateauthor = authorService.update(author);
+//
+//
+//        AuthorDto authordto = new AuthorDto();
+//        authordto.setId(updateauthor.getId());
+//        authordto.setName(updateauthor.getName());
+//        authordto.setEmail(updateauthor.getEmail());
+//
+//        return ResponseEntity.ok(authordto);
+
+
+        // البحث عن الكاتب الأصلي
+       Author existingAuthorOpt = authorService.findById(dto.getId());
+
+
+
+        Author existingAuthor = authorService.update(existingAuthorOpt);
+
+        // تحديث بيانات الكاتب
+        existingAuthor.setName(dto.getName());
+        existingAuthor.setEmail(dto.getEmail());
+
+        // تحديث البيانات في قاعدة البيانات
+        Author updatedAuthor = authorService.update(existingAuthor);
+
+        // تحويل الكائن المحدث إلى DTO
+        AuthorDto updatedDto = new AuthorDto();
+        updatedDto.setId(updatedAuthor.getId());
+        updatedDto.setName(updatedAuthor.getName());
+        updatedDto.setEmail(updatedAuthor.getEmail());
+
+        return ResponseEntity.ok(updatedDto);
     }
 
-//    @GetMapping("")
-//    public List<Author> findall() {
-//        return authorService.findall();
-//    }
 
 
     @PostMapping("/post/")
-    public ResponseEntity<?> insert(@RequestBody @Valid Author author) {
-        return ResponseEntity.ok(authorService.insert(author));
+    public ResponseEntity<?> insert(@RequestBody @Valid AuthorDto dto) {
+
+//        Author author =new Author(dto.getName(), dto.getEmail());
+//         Author returnauthor =authorService.insert(author);
+//              return ResponseEntity.ok(returnauthor);
+
+        Author author = new Author();
+        author.setName(dto.getName());
+        author.setEmail(dto.getEmail());
+        Author savedAuthor = authorService.insert(author);
+
+        AuthorDto returndto = new AuthorDto();
+        returndto.setId(savedAuthor.getId());
+        returndto.setName(savedAuthor.getName());
+        returndto.setEmail(savedAuthor.getEmail());
+        return ResponseEntity.ok(returndto);
 
     }
 
@@ -69,18 +121,14 @@ public class AuthorController {
     @GetMapping("")
     public List<Author> findAll() {
         return authorService.findAll();
+
     }
-
-
 
 
     @DeleteMapping("/{id}")
-    public void DeleteAuthor(@PathVariable Long id){
+    public void DeleteAuthor(@PathVariable Long id) {
         authorService.DeleteAuthor(id);
     }
-
-
-
 
 
 }

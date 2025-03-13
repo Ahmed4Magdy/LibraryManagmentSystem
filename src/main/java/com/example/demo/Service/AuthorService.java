@@ -19,20 +19,29 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthorService extends BaseService<Author, Long> {
 
-
     private final AuthorRepo authorRepo;
 
-
     public Author update(Author author) {
-        return authorRepo.save(author);
-    }
+
+
+//        Optional<Author> existauthor = authorRepo.findById(author.getId());
+//
+//        Author existreal=existauthor.get();
+//
+//        existreal.setName(author.getName());
+//        existreal.setEmail(author.getEmail());
+//        return authorRepo.save(existreal);
+
+       return authorRepo.save(author);
+        }
+
+
 
 
     @Cacheable(value = "findAllAuthor")
     public List<Author> findAll() {
         return authorRepo.findAll();
     }
-
 
     public List<Author> finfByAuthorSpec(Authorsearch search) {
 
