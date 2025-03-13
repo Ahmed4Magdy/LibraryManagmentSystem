@@ -1,16 +1,12 @@
 package com.example.demo.Controller;
 
 
-import com.example.demo.BookProjection;
-import com.example.demo.Entity.Author;
 import com.example.demo.Entity.Book;
-import com.example.demo.Entity.BookDto;
+import com.example.demo.Dto.BookDto;
 import com.example.demo.Service.AuthorService;
 import com.example.demo.Service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
