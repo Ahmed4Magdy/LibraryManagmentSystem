@@ -1,15 +1,13 @@
 package com.example.demo.Controller;
 
 
-import com.example.demo.BookProjection;
-import com.example.demo.Entity.Author;
 import com.example.demo.Entity.Book;
-import com.example.demo.Entity.BookDto;
+import com.example.demo.Dto.BookDto;
+import com.example.demo.Mapper.BookMapper;
 import com.example.demo.Service.AuthorService;
 import com.example.demo.Service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -23,9 +21,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookController {
 
-    private final  BookService bookService;
+    private final BookService bookService;
 
-    private final AuthorService authorService;
+    private final BookMapper bookMapper;
 
     @PostMapping("/post")
     @Transactional
@@ -37,40 +35,41 @@ public class BookController {
 
     @PostMapping("/post/")
     @Transactional
-    public Book insert(@RequestBody @Valid BookDto dto) {
+    public ResponseEntity<?> insert(@RequestBody @Valid BookDto dto) {
 
 
-        Book book = new Book();
+        Book book = bookMapper.maptoEntity(dto);
+        Book returnbook = bookService.insert(book);
 
-        if (book.getAuthor() != null && book.getAuthor().getId() != null) {
+        BookDto returndto = bookMapper.maptoDto(returnbook);
 
-
-            book.setTitle(dto.getTitle());
-            book.setPrice(dto.getPrice());
-            book.setAuthor(dto.getAuthor());
-        }
-        return bookService.insert(book);
-
-
+        return ResponseEntity.ok(returndto);
     }
 
     @GetMapping("/{id}")
-    public Book findbyid(@PathVariable Long id) {
+    public ResponseEntity<?> findbyid(@PathVariable Long id) {
 
-//        Book book = bookService.findbyid(id);
-//
-////        Author author= book.getAuthor();
-//        return book;
+        Book book = bookService.findbyid(id);
+        BookDto returndto = bookMapper.maptoDto(book);
 
-        return bookService.findbyid(id);
+
+        return ResponseEntity.ok(returndto);
+
+
     }
 
 
-    @PutMapping("/put/{id}")
-    public Book update(@PathVariable Long id, @RequestBody Book book) {
-        Book books = findbyid(book.getId());
-//        books.getAuthor().setName(books.getAuthor().getName());
-        return bookService.update(id, books);
+    @PutMapping("/put")
+    public ResponseEntity<?> update(@RequestBody BookDto dto) {
+
+        Book existbook = bookService.findbyid(dto.getId());
+
+        Book entity = bookMapper.maptoEntity(dto);
+        Book returnbook = bookService.update(entity);
+
+        BookDto returndto = bookMapper.maptoDto(returnbook);
+        return ResponseEntity.ok(returndto);
+
     }
 
     @GetMapping("")

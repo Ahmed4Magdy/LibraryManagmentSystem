@@ -47,7 +47,7 @@ public class Book extends BaseEntity<Long> {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
-    @NotNull
+//    @NotNull
     @JsonIgnore
     private Author author;
 
